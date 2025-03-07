@@ -7,7 +7,7 @@ const Physiotherapists = () => {
   const { physiotherapists } = useContext(AppContext)
   return (
     <div>
-      <p className='text-gray-600'>Browse through the physiotherapists specialist.</p>
+      <p className='text-gray-700 text-center text-3xl '>Browse through the physiotherapists.</p>
       <div className='flex flex-col sm:flex-row items-start gap-5 mt-5'>
         <div className='w-full grid grid-cols-auto gap-4 gap-y-6'>
           {physiotherapists && physiotherapists.length > 0 ? physiotherapists.map((item, index) => (

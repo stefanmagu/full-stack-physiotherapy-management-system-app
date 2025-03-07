@@ -154,7 +154,7 @@ const Appointment = () => {
                         <p className='text-sm text-gray-600 max-w-[700px] mt-1'>{physiotherapistInfo.about}</p>
                     </div>
 
-                    <p className='text-gray-600 font-medium mt-4'>Appointment fee: <span className='text-gray-800'>{currencySymbol}{physiotherapistInfo.fees}</span> </p>
+                    <p className='text-gray-600 font-medium mt-4'>Appointment fee: <span className='text-gray-800'>{physiotherapistInfo.fees} {currencySymbol}</span> </p>
                 </div>
             </div>
 

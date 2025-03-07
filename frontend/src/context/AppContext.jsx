@@ -6,7 +6,7 @@ export const AppContext = createContext()
 
 const AppContextProvider = (props) => {
 
-    const currencySymbol = '$'
+    const currencySymbol = 'RON'
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
     const [physiotherapists, setPhysiotherapists] = useState([])
