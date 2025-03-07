@@ -14,7 +14,17 @@ const physiotherapistSchema = new mongoose.Schema({
     slots_booked: { type: Object, default: {} },
     address: { type: Object, required: true },
     date: { type: Number, required: true },
-}, { minimize: false })
+    reviews: { 
+        type: [{
+            userId: { type: String, required: true },
+            appointmentId: { type: String, required: true },
+            rating: { type: Number, required: true, min: 1, max: 5 },
+            comment: { type: String },
+            date: { type: Number }
+        }], 
+        default: [] 
+    }
+}, { minimize: false });
 
 const physiotherapistModel = mongoose.models.physiotherapist || mongoose.model("physiotherapist", physiotherapistSchema);
 export default physiotherapistModel;

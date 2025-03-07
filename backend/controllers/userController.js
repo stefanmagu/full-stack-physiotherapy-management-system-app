@@ -344,6 +344,72 @@ const verifyStripe = async (req, res) => {
 
 }
 
+// API to submit a review for a physiotherapist
+const submitReview = async (req, res) => {
+    try {
+        const { appointmentId, rating, comment, userId } = req.body;
+
+        if (!appointmentId || !rating || !userId) {
+            return res.json({ success: false, message: 'Missing required fields' });
+        }
+
+        // Validate rating
+        if (rating < 1 || rating > 5) {
+            return res.json({ success: false, message: 'Rating must be between 1 and 5' });
+        }
+
+        // Find the appointment
+        const appointment = await appointmentModel.findById(appointmentId);
+        
+        if (!appointment) {
+            return res.json({ success: false, message: 'Appointment not found' });
+        }
+
+        // Check if the appointment belongs to the user
+        if (appointment.userId !== userId) {
+            return res.json({ success: false, message: 'Unauthorized' });
+        }
+
+        // Check if the appointment is completed and not cancelled
+        if (!appointment.isCompleted || appointment.cancelled) {
+            return res.json({ success: false, message: 'Cannot review an appointment that is not completed or was cancelled' });
+        }
+
+        // Check if the appointment is already reviewed
+        if (appointment.reviewed) {
+            return res.json({ success: false, message: 'This appointment has already been reviewed' });
+        }
+
+        // Create the review object
+        const reviewData = {
+            userId,
+            appointmentId,
+            rating,
+            comment: comment || '',
+            date: Date.now()
+        };
+
+        // Update the physiotherapist's reviews
+        await physiotherapistModel.findByIdAndUpdate(
+            appointment.physiotherapistId,
+            { $push: { reviews: reviewData } }
+        );
+
+        // Mark the appointment as reviewed
+        appointment.reviewed = true;
+        await appointment.save();
+
+        return res.json({ 
+            success: true, 
+            message: 'Review submitted successfully' 
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 export {
     loginUser,
     registerUser,
@@ -355,5 +421,6 @@ export {
     paymentRazorpay,
     verifyRazorpay,
     paymentStripe,
-    verifyStripe
+    verifyStripe,
+    submitReview
 }

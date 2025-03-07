@@ -15,12 +15,52 @@ const Appointment = () => {
     const [physioSlots, setPhysioSlots] = useState([])
     const [slotIndex, setSlotIndex] = useState(0)
     const [slotTime, setSlotTime] = useState('')
+    const [reviewsVisible, setReviewsVisible] = useState(false)
 
     const navigate = useNavigate()
 
     const fetchPhysioInfo = async () => {
         const physiotherapistInfo = physiotherapists.find((phyisiotherapist) => phyisiotherapist._id === physiotherapistId)
         setPhysiotherapistInfo(physiotherapistInfo)
+    }
+
+    // Function to calculate average rating
+    const calculateAverageRating = () => {
+        if (!physiotherapistInfo || !physiotherapistInfo.reviews || physiotherapistInfo.reviews.length === 0) {
+            return 0;
+        }
+        
+        const totalRating = physiotherapistInfo.reviews.reduce((sum, review) => sum + review.rating, 0);
+        return (totalRating / physiotherapistInfo.reviews.length).toFixed(1);
+    }
+
+    // Function to render stars based on rating
+    const renderStars = (rating) => {
+        const stars = [];
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 >= 0.5;
+        
+        for (let i = 1; i <= 5; i++) {
+            if (i <= fullStars) {
+                stars.push(<span key={i} className="text-yellow-400">★</span>);
+            } else if (i === fullStars + 1 && hasHalfStar) {
+                stars.push(<span key={i} className="text-yellow-400">★</span>);
+            } else {
+                stars.push(<span key={i} className="text-gray-300">★</span>);
+            }
+        }
+        
+        return stars;
+    }
+
+    // Format date for reviews
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+        });
     }
 
     const getAvailableSolts = async () => {
@@ -148,6 +188,20 @@ const Appointment = () => {
                         <button className='py-0.5 px-2 border text-xs rounded-full'>{physiotherapistInfo.experience}</button>
                     </div>
 
+                    {/* ----- Physiotherapist Rating ----- */}
+                    {console.log(physiotherapistInfo.reviews)}
+                    {console.log(physiotherapistInfo.reviews.length)}
+                    {physiotherapistInfo.reviews && physiotherapistInfo.reviews.length > 0 && (
+                        <div className="flex items-center mt-2">
+                            <div className="flex items-center">
+                                {renderStars(calculateAverageRating())}
+                            </div>
+                            <span className="ml-2 text-sm text-gray-600">
+                                {calculateAverageRating()} ({physiotherapistInfo.reviews.length} {physiotherapistInfo.reviews.length === 1 ? 'review' : 'reviews'})
+                            </span>
+                        </div>
+                    )}
+
                     {/* ----- Physiotherapist About ----- */}
                     <div>
                         <p className='flex items-center gap-1 text-sm font-medium text-[#262626] mt-3'>About <img className='w-3' src={assets.info_icon} alt="" /></p>
@@ -158,6 +212,7 @@ const Appointment = () => {
                 </div>
             </div>
 
+            
             {/* Booking slots */}
             <div className='sm:ml-72 sm:pl-4 mt-8 font-medium text-[#565656]'>
                 <p >Booking slots</p>
@@ -178,6 +233,43 @@ const Appointment = () => {
 
                 <button onClick={bookAppointment} className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>Book an appointment</button>
             </div>
+
+            {/* Reviews Section */}
+            {physiotherapistInfo.reviews && physiotherapistInfo.reviews.length > 0 && (
+                <div className="mt-8 sm:ml-72 sm:pl-4">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-medium text-gray-700">Patient Reviews</h3>
+                        <button 
+                            onClick={() => setReviewsVisible(!reviewsVisible)} 
+                            className="text-primary text-sm"
+                        >
+                            {reviewsVisible ? 'Hide Reviews' : 'Show Reviews'}
+                        </button>
+                    </div>
+                    
+                    {reviewsVisible && (
+                        <div className="mt-4 space-y-4">
+                            {physiotherapistInfo.reviews.map((review, index) => (
+                                <div key={index} className="border rounded-lg p-4">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center">
+                                            {renderStars(review.rating)}
+                                            <span className="ml-2 font-medium">{review.rating}/5</span>
+                                        </div>
+                                        {review.date && (
+                                            <span className="text-sm text-gray-500">{formatDate(review.date)}</span>
+                                        )}
+                                    </div>
+                                    {review.comment && (
+                                        <p className="mt-2 text-gray-600">{review.comment}</p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
+
         </div>
     ) : null
 }

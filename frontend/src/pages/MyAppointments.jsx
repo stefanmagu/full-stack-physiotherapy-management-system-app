@@ -7,11 +7,17 @@ import { assets } from '../assets/assets'
 
 const MyAppointments = () => {
 
-    const { backendUrl, token } = useContext(AppContext)
+    const { backendUrl, token, userData } = useContext(AppContext)
     const navigate = useNavigate()
 
     const [appointments, setAppointments] = useState([])
     const [payment, setPayment] = useState('')
+    const [reviewForm, setReviewForm] = useState({
+        appointmentId: '',
+        rating: 5,
+        comment: ''
+    })
+    const [showReviewModal, setShowReviewModal] = useState(false)
 
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -115,7 +121,54 @@ const MyAppointments = () => {
         }
     }
 
+    // Function to open review modal
+    const openReviewModal = (appointmentId) => {
+        setReviewForm({
+            appointmentId,
+            rating: 5,
+            comment: ''
+        })
+        setShowReviewModal(true)
+    }
 
+    // Function to handle review form input changes
+    const handleReviewChange = (e) => {
+        const { name, value } = e.target
+        setReviewForm({
+            ...reviewForm,
+            [name]: name === 'rating' ? parseInt(value) : value
+        })
+    }
+
+    // Function to submit review
+    const submitReview = async (e) => {
+        e.preventDefault()
+        
+        try {
+            // Find the appointment to get its userId
+            const appointment = appointments.find(app => app._id === reviewForm.appointmentId);
+            
+            const { data } = await axios.post(
+                backendUrl + '/api/user/submit-review', 
+                {
+                    ...reviewForm,
+                    userId: appointment.userId
+                }, 
+                { headers: { token } }
+            )
+
+            if (data.success) {
+                toast.success(data.message)
+                setShowReviewModal(false)
+                getUserAppointments()
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        }
+    }
 
     useEffect(() => {
         if (token) {
@@ -148,6 +201,23 @@ const MyAppointments = () => {
                             {!item.cancelled && item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border rounded text-[#696969]  bg-[#EAEFFF]'>Paid</button>}
 
                             {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500'>Completed</button>}
+                            
+                            {/* Review button - only show for completed appointments that haven't been reviewed */}
+                            {item.isCompleted && !item.cancelled && !item.reviewed && 
+                                <button 
+                                    onClick={() => openReviewModal(item._id)} 
+                                    className='text-white sm:min-w-48 py-2 border rounded bg-primary hover:bg-primary/90 transition-all duration-300'
+                                >
+                                    Leave a Review
+                                </button>
+                            }
+                            
+                            {/* Show if reviewed */}
+                            {item.isCompleted && !item.cancelled && item.reviewed && 
+                                <button className='sm:min-w-48 py-2 border border-primary rounded text-primary'>
+                                    Reviewed
+                                </button>
+                            }
 
                             {!item.cancelled && !item.isCompleted && <button onClick={() => cancelAppointment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300'>Cancel appointment</button>}
                             {item.cancelled && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>}
@@ -155,6 +225,58 @@ const MyAppointments = () => {
                     </div>
                 ))}
             </div>
+
+            {/* Review Modal */}
+            {showReviewModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg w-full max-w-md">
+                        <h2 className="text-xl font-semibold mb-4">Leave a Review</h2>
+                        <form onSubmit={submitReview}>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 mb-2">Rating</label>
+                                <div className="flex items-center space-x-2">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <button
+                                            key={star}
+                                            type="button"
+                                            onClick={() => setReviewForm({...reviewForm, rating: star})}
+                                            className="text-2xl focus:outline-none"
+                                        >
+                                            {star <= reviewForm.rating ? "★" : "☆"}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 mb-2">Comment</label>
+                                <textarea
+                                    name="comment"
+                                    value={reviewForm.comment}
+                                    onChange={handleReviewChange}
+                                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                                    rows="4"
+                                    placeholder="Share your experience..."
+                                ></textarea>
+                            </div>
+                            <div className="flex justify-end space-x-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowReviewModal(false)}
+                                    className="px-4 py-2 border rounded-lg hover:bg-gray-100"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
+                                >
+                                    Submit Review
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
