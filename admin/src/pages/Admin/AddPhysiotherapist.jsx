@@ -14,7 +14,6 @@ const AddPhysiotherapist = () => {
     const [experience, setExperience] = useState('1 Year')
     const [fees, setFees] = useState('')
     const [about, setAbout] = useState('')
-    const [speciality, setSpeciality] = useState('Physiotherapist')
     const [degree, setDegree] = useState('')
     const [address1, setAddress1] = useState('')
     const [address2, setAddress2] = useState('')
@@ -40,7 +39,7 @@ const AddPhysiotherapist = () => {
             formData.append('experience', experience)
             formData.append('fees', Number(fees))
             formData.append('about', about)
-            formData.append('speciality', speciality)
+            formData.append('speciality', 'Physiotherapist') // Always set to Physiotherapist
             formData.append('degree', degree)
             formData.append('address', JSON.stringify({ line1: address1, line2: address2 }))
 
@@ -130,18 +129,10 @@ const AddPhysiotherapist = () => {
 
                     <div className='w-full lg:flex-1 flex flex-col gap-4'>
 
-                        <div className='flex-1 flex flex-col gap-1'>
+                        {/* <div className='flex-1 flex flex-col gap-1'>
                             <p>Speciality</p>
-                            <select onChange={e => setSpeciality(e.target.value)} value={speciality} className='border rounded px-2 py-2'>
-                                <option value="Physiotherapist">Physiotherapist</option>
-                                <option value="Sports physiotherapy">Sports physiotherapy</option>
-                                <option value="Neurological physiotherapy">Neurological physiotherapy</option>
-                                <option value="Pediatric physiotherapy">Pediatric physiotherapy</option>
-                                <option value="Geriatric physiotherapy">Geriatric physiotherapy</option>
-                                <option value="Orthopedic physiotherapy">Orthopedic physiotherapy</option>
-                            </select>
-                        </div>
-
+                            <input value="Physiotherapist" className='border rounded px-3 py-2 bg-gray-100 ' type="text" disabled />
+                        </div> */}
 
                         <div className='flex-1 flex flex-col gap-1'>
                             <p>Degree</p>

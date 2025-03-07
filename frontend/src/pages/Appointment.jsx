@@ -16,6 +16,12 @@ const Appointment = () => {
     const [slotIndex, setSlotIndex] = useState(0)
     const [slotTime, setSlotTime] = useState('')
     const [reviewsVisible, setReviewsVisible] = useState(false)
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [appointmentDetails, setAppointmentDetails] = useState({
+        date: '',
+        time: '',
+        formattedDate: ''
+    })
 
     const navigate = useNavigate()
 
@@ -124,11 +130,16 @@ const Appointment = () => {
 
     }
 
-    const bookAppointment = async () => {
-
+    // Function to prepare appointment confirmation
+    const prepareAppointmentConfirmation = () => {
         if (!token) {
             toast.warning('Login to book appointment')
             return navigate('/login')
+        }
+
+        if (!slotTime) {
+            toast.warning('Please select a time slot')
+            return
         }
 
         const date = physioSlots[slotIndex][0].datetime
@@ -138,24 +149,47 @@ const Appointment = () => {
         let year = date.getFullYear()
 
         const slotDate = day + "_" + month + "_" + year
+        
+        // Format date for display in modal
+        const formattedDate = `${day} ${months[month-1]} ${year}`
+        
+        setAppointmentDetails({
+            date: slotDate,
+            time: slotTime,
+            formattedDate: formattedDate
+        })
+        
+        setShowConfirmModal(true)
+    }
 
+    const bookAppointment = async () => {
         try {
-
-            const { data } = await axios.post(backendUrl + '/api/user/book-appointment', { physiotherapistId, slotDate, slotTime }, { headers: { token } })
+            const { data } = await axios.post(
+                backendUrl + '/api/user/book-appointment', 
+                { 
+                    physiotherapistId, 
+                    slotDate: appointmentDetails.date, 
+                    slotTime: appointmentDetails.time 
+                }, 
+                { headers: { token } }
+            )
+            
             if (data.success) {
                 toast.success(data.message)
                 getPhysiotherapistsData()
+                setShowConfirmModal(false)
                 navigate('/my-appointments')
             } else {
                 toast.error(data.message)
             }
-
         } catch (error) {
             console.log(error)
             toast.error(error.message)
         }
-
     }
+
+    // Array of month names for formatting
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
     useEffect(() => {
         if (physiotherapists.length > 0) {
@@ -231,7 +265,7 @@ const Appointment = () => {
                     ))}
                 </div>
 
-                <button onClick={bookAppointment} className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>Book an appointment</button>
+                <button onClick={prepareAppointmentConfirmation} className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>Book an appointment</button>
             </div>
 
             {/* Reviews Section */}
@@ -267,6 +301,42 @@ const Appointment = () => {
                             ))}
                         </div>
                     )}
+                </div>
+            )}
+
+            {/* Confirmation Modal */}
+            {showConfirmModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg w-full max-w-md">
+                        <h2 className="text-xl font-semibold mb-4">Confirm Appointment</h2>
+                        
+                        <div className="mb-6">
+                            <h3 className="font-medium text-gray-700 mb-2">Appointment Details:</h3>
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                                <p className="mb-2"><span className="font-medium">Physiotherapist:</span> {physiotherapistInfo.name}</p>
+                                <p className="mb-2"><span className="font-medium">Date:</span> {appointmentDetails.formattedDate}</p>
+                                <p className="mb-2"><span className="font-medium">Time:</span> {appointmentDetails.time}</p>
+                                <p><span className="font-medium">Fee:</span> {physiotherapistInfo.fees} {currencySymbol}</p>
+                            </div>
+                        </div>
+                        
+                        <p className="text-gray-600 mb-4">Are you sure you want to book this appointment?</p>
+                        
+                        <div className="flex justify-end space-x-2">
+                            <button
+                                onClick={() => setShowConfirmModal(false)}
+                                className="px-4 py-2 border rounded-lg hover:bg-gray-100"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={bookAppointment}
+                                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
+                            >
+                                Confirm Booking
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
 
