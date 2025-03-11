@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { PhysiotherapistContext } from '../context/PhysiotherapistContext'
 import { AdminContext } from '../context/AdminContext'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
 
@@ -16,6 +17,8 @@ const Login = () => {
   const { setDToken } = useContext(PhysiotherapistContext)
   const { setAToken } = useContext(AdminContext)
 
+  const navigate = useNavigate()
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
 
@@ -25,6 +28,7 @@ const Login = () => {
       if (data.success) {
         setAToken(data.token)
         localStorage.setItem('aToken', data.token)
+        navigate('/admin-dashboard')
       } else {
         toast.error(data.message)
       }
@@ -35,6 +39,7 @@ const Login = () => {
       if (data.success) {
         setDToken(data.token)
         localStorage.setItem('dToken', data.token)
+        navigate('/physiotherapist-dashboard')
       } else {
         toast.error(data.message)
       }

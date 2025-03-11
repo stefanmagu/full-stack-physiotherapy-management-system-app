@@ -171,13 +171,74 @@ const physiotherapistDashboard = async (req, res) => {
             }
         })
 
-
+        // Get current date
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+        
+        // Calculate start of month and current timestamp
+        const startOfMonth = new Date(currentYear, currentMonth, 1).getTime();
+        const currentTimestamp = currentDate.getTime();
+        
+        // Prepare data for charts
+        // 1. Monthly appointments (current month)
+        const monthlyAppointments = appointments.filter(item => 
+            item.date >= startOfMonth && item.date <= currentTimestamp
+        );
+        
+        // 2. Future appointments
+        const futureAppointments = appointments.filter(item => 
+            item.date > currentTimestamp && !item.cancelled
+        );
+        
+        // 3. Appointment status breakdown
+        const completedAppointments = appointments.filter(item => item.isCompleted).length;
+        const cancelledAppointments = appointments.filter(item => item.cancelled).length;
+        
+        // Count all appointments that are neither completed nor cancelled as pending
+        // This includes both past and future appointments
+        const pendingAppointments = appointments.filter(item => 
+            !item.isCompleted && !item.cancelled
+        ).length;
+        
+        // Also calculate future pending appointments separately for reference
+        const futurePendingAppointments = appointments.filter(item => 
+            !item.isCompleted && !item.cancelled && item.date > currentTimestamp
+        ).length;
+        
+        // 4. Last 6 months appointments trend
+        const last6MonthsData = [];
+        for (let i = 5; i >= 0; i--) {
+            const monthDate = new Date(currentYear, currentMonth - i, 1);
+            const monthName = monthDate.toLocaleString('default', { month: 'short' });
+            const monthStartTimestamp = monthDate.getTime();
+            const monthEndTimestamp = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getTime();
+            
+            const monthCount = appointments.filter(item => 
+                item.date >= monthStartTimestamp && item.date <= monthEndTimestamp
+            ).length;
+            
+            last6MonthsData.push({
+                month: monthName,
+                count: monthCount
+            });
+        }
 
         const dashData = {
             earnings,
             appointments: appointments.length,
             patients: patients.length,
-            latestAppointments: appointments.reverse()
+            latestAppointments: appointments.reverse(),
+            // Chart data
+            currentMonthAppointments: monthlyAppointments.length,
+            futureAppointments: futureAppointments.length,
+            appointmentStatus: {
+                completed: completedAppointments,
+                cancelled: cancelledAppointments,
+                pending: pendingAppointments,
+                futurePending: futurePendingAppointments
+            },
+            last6MonthsData
         }
 
         res.json({ success: true, dashData })

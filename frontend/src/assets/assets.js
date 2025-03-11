@@ -37,7 +37,9 @@ import Gynecologist from './Gynecologist.svg'
 import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
 import header from './header.svg'
-
+import physioPacient from "./physio_with_pacient.png"
+import about_us from "./about_us.png"
+import logo1 from "./logo1.png"
 
 export const assets = {
     appointment_img,
@@ -45,6 +47,8 @@ export const assets = {
     header_img,
     group_profiles,
     logo,
+    logo1,
+    physioPacient,
     chats_icon,
     verified_icon,
     info_icon,
@@ -53,6 +57,7 @@ export const assets = {
     contact_image,
     about_image,
     menu_icon,
+    about_us,
     cross_icon,
     dropdown_icon,
     upload_icon,

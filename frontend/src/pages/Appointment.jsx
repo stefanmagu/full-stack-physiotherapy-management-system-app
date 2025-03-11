@@ -101,7 +101,6 @@ const Appointment = () => {
 
             while (currentDate < endTime) {
                 let formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
                 let day = currentDate.getDate()
                 let month = currentDate.getMonth() + 1
                 let year = currentDate.getFullYear()
@@ -110,16 +109,17 @@ const Appointment = () => {
                 const slotTime = formattedTime
 
                 const isSlotAvailable = physiotherapistInfo.slots_booked[slotDate] && physiotherapistInfo.slots_booked[slotDate].includes(slotTime) ? false : true
+                
+                // Check if the time slot is in the future
+                const isInFuture = currentDate > new Date();
 
-                if (isSlotAvailable) {
-
+                if (isSlotAvailable && isInFuture) {
                     // Add slot to array
                     timeSlots.push({
                         datetime: new Date(currentDate),
                         time: formattedTime
                     })
                 }
-
                 // Increment current time by 30 minutes
                 currentDate.setMinutes(currentDate.getMinutes() + 30);
             }
@@ -223,8 +223,6 @@ const Appointment = () => {
                     </div>
 
                     {/* ----- Physiotherapist Rating ----- */}
-                    {console.log(physiotherapistInfo.reviews)}
-                    {console.log(physiotherapistInfo.reviews.length)}
                     {physiotherapistInfo.reviews && physiotherapistInfo.reviews.length > 0 && (
                         <div className="flex items-center mt-2">
                             <div className="flex items-center">

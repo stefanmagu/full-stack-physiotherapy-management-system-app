@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { PhysiotherapistContext } from './context/PhysiotherapistContext';
 import { AdminContext } from './context/AdminContext';
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar'
@@ -19,6 +19,16 @@ const App = () => {
 
   const { dToken } = useContext(PhysiotherapistContext)
   const { aToken } = useContext(AdminContext)
+  const navigate = useNavigate();
+
+  // Redirect to appropriate dashboard when tokens are available
+  useEffect(() => {
+    if (aToken) {
+      navigate('/admin-dashboard');
+    } else if (dToken) {
+      navigate('/physiotherapist-dashboard');
+    }
+  }, [aToken, dToken]);
 
   return dToken || aToken ? (
     <div className='bg-[#F8F9FD]'>
@@ -27,7 +37,7 @@ const App = () => {
       <div className='flex items-start'>
         <Sidebar />
         <Routes>
-          <Route path='/' element={<></>} />
+          <Route path='/' element={aToken ? <Navigate to="/admin-dashboard" /> : <Navigate to="/physiotherapist-dashboard" />} />
           <Route path='/admin-dashboard' element={<Dashboard />} />
           <Route path='/all-appointments' element={<AllAppointments />} />
           <Route path='/add-physiotherapist' element={<AddPhysiotherapist />} />
