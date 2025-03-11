@@ -224,6 +224,53 @@ const physiotherapistDashboard = async (req, res) => {
             });
         }
 
+        // 5. Simple prediction for future appointments (next 3 months)
+        const futurePredictions = [];
+        
+        // Calculate average monthly appointments from available data
+        const totalAppointments = last6MonthsData.reduce((sum, item) => sum + item.count, 0);
+        const avgMonthlyAppointments = totalAppointments > 0 ? 
+            totalAppointments / last6MonthsData.length : 0;
+        
+        // Generate predictions for next 3 months
+        for (let i = 1; i <= 3; i++) {
+            const futureMonth = (currentMonth + i) % 12;
+            const futureYear = currentYear + Math.floor((currentMonth + i) / 12);
+            const monthDate = new Date(futureYear, futureMonth, 1);
+            const monthName = monthDate.toLocaleString('default', { month: 'short' });
+            
+            // Get already confirmed appointments for this month
+            const futureMonthStart = new Date(futureYear, futureMonth, 1).getTime();
+            const futureMonthEnd = new Date(futureYear, futureMonth + 1, 0).getTime();
+            
+            const confirmedAppointments = appointments.filter(item => 
+                !item.cancelled && 
+                item.date >= futureMonthStart && 
+                item.date <= futureMonthEnd
+            ).length;
+            
+            // Simple prediction: average of past months + confirmed appointments
+            // For the first month ahead, give more weight to confirmed appointments
+            // For later months, rely more on the average
+            let prediction;
+            if (i === 1) {
+                // First month: 70% confirmed + 30% average
+                prediction = Math.round(confirmedAppointments * 0.7 + avgMonthlyAppointments * 0.3);
+            } else if (i === 2) {
+                // Second month: 40% confirmed + 60% average
+                prediction = Math.round(confirmedAppointments * 0.4 + avgMonthlyAppointments * 0.6);
+            } else {
+                // Third month: 20% confirmed + 80% average
+                prediction = Math.round(confirmedAppointments * 0.2 + avgMonthlyAppointments * 0.8);
+            }
+            
+            futurePredictions.push({
+                month: monthName,
+                year: futureYear,
+                prediction: Math.max(0, prediction)
+            });
+        }
+
         const dashData = {
             earnings,
             appointments: appointments.length,
@@ -238,7 +285,8 @@ const physiotherapistDashboard = async (req, res) => {
                 pending: pendingAppointments,
                 futurePending: futurePendingAppointments
             },
-            last6MonthsData
+            last6MonthsData,
+            futurePredictions
         }
 
         res.json({ success: true, dashData })

@@ -92,6 +92,41 @@ const PhysiotherapistDashboard = () => {
     };
   };
 
+  const prepareForecastChart = () => {
+    if (!dashData || !dashData.futurePredictions) return null;
+    
+    // Combine past and future data for a simple chart
+    const labels = [
+      ...dashData.last6MonthsData.map(item => item.month),
+      ...dashData.futurePredictions.map(item => `${item.month}`)
+    ];
+    
+    const pastData = dashData.last6MonthsData.map(item => item.count);
+    const futureData = dashData.futurePredictions.map(item => item.prediction);
+    
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Past Appointments',
+          data: [...pastData, ...Array(futureData.length).fill(null)],
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+          barPercentage: 0.6,
+        },
+        {
+          label: 'Predicted Appointments',
+          data: [...Array(pastData.length).fill(null), ...futureData],
+          backgroundColor: 'rgba(255, 159, 64, 0.6)',
+          borderColor: 'rgba(255, 159, 64, 1)',
+          borderWidth: 1,
+          barPercentage: 0.6,
+        }
+      ],
+    };
+  };
+
   return dashData && (
     <div className='m-5'>
 
@@ -122,13 +157,6 @@ const PhysiotherapistDashboard = () => {
             <p className='text-xl font-semibold text-gray-600'>{dashData.currentMonthAppointments}</p>
             <p className='text-gray-400'>This Month</p></div>
         </div>
-        {/* <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
-          <img className='w-14' src={assets.appointments_icon} alt="" />
-          <div>
-            <p className='text-xl font-semibold text-gray-600'>{dashData.futureAppointments}</p>
-            <p className='text-gray-400'>Upcoming</p>
-          </div>
-        </div> */}
       </div>
 
       {/* Charts Section */}
@@ -194,6 +222,49 @@ const PhysiotherapistDashboard = () => {
                 }}
               />
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Forecast Chart */}
+      <div className='mt-8'>
+        <div className='bg-white p-4 rounded-lg shadow-md'>
+          <h2 className='text-lg font-semibold mb-4 text-gray-700'>3-Month Forecast</h2>
+          <div className='h-64'>
+            {prepareForecastChart() && (
+              <Bar 
+                data={prepareForecastChart()} 
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      title: {
+                        display: true,
+                        text: 'Number of Appointments'
+                      }
+                    }
+                  },
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                    },
+                    tooltip: {
+                      callbacks: {
+                        title: function(context) {
+                          return context[0].label;
+                        }
+                      }
+                    }
+                  }
+                }}
+              />
+            )}
+          </div>
+          <div className='mt-4 text-sm text-gray-600 bg-gray-50 p-3 rounded'>
+            <p className='font-medium'>About this forecast:</p>
+            <p>This simple prediction is based on your average monthly appointments and already confirmed bookings. Blue bars show past appointments, orange bars show predicted future appointments.</p>
           </div>
         </div>
       </div>
