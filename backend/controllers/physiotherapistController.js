@@ -255,13 +255,13 @@ const physiotherapistDashboard = async (req, res) => {
             let prediction;
             if (i === 1) {
                 // First month: 70% confirmed + 30% average
-                prediction = Math.round(confirmedAppointments * 0.7 + avgMonthlyAppointments * 0.3);
+                prediction = Math.round(confirmedAppointments * 0.7 + avgMonthlyAppointments * 0.3);// 70% confirmed appointments and 30% average of past 6 months
             } else if (i === 2) {
                 // Second month: 40% confirmed + 60% average
-                prediction = Math.round(confirmedAppointments * 0.4 + avgMonthlyAppointments * 0.6);
+                prediction = Math.round(confirmedAppointments * 0.4 + avgMonthlyAppointments * 0.6);// 40% confirmed appointments and 60% average of past 6 months
             } else {
                 // Third month: 20% confirmed + 80% average
-                prediction = Math.round(confirmedAppointments * 0.2 + avgMonthlyAppointments * 0.8);
+                prediction = Math.round(confirmedAppointments * 0.2 + avgMonthlyAppointments * 0.8);// 20% confirmed appointments and 80% average of past 6 months
             }
             
             futurePredictions.push({
