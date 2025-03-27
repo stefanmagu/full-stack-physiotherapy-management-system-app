@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import physiotherapistModel from "../models/physiotherapistModel.js";
 import appointmentModel from "../models/appointmentModel.js";
+import { v2 as cloudinary } from 'cloudinary'
 
 // API for physiotherapist Login 
 const loginPhysiotherapist = async (req, res) => {
@@ -135,9 +136,26 @@ const physiotherapistProfile = async (req, res) => {
 const updatePhysiotherapistProfile = async (req, res) => {
     try {
 
-        const { physiotherapistId, fees, address, available } = req.body
+        const { physiotherapistId, fees, address, available, about } = req.body
+        const imageFile = req.file
 
-        await physiotherapistModel.findByIdAndUpdate(physiotherapistId, { fees, address, available })
+        // Parse the address if it's a string
+        const addressObj = typeof address === 'string' ? JSON.parse(address) : address
+
+        await physiotherapistModel.findByIdAndUpdate(physiotherapistId, { 
+            fees, 
+            address: addressObj, 
+            available, 
+            about 
+        })
+
+        if (imageFile) {
+            // upload image to cloudinary
+            const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
+            const imageURL = imageUpload.secure_url
+
+            await physiotherapistModel.findByIdAndUpdate(physiotherapistId, { image: imageURL })
+        }
 
         res.json({ success: true, message: 'Profile Updated' })
 

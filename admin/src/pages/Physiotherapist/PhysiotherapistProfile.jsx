@@ -9,23 +9,27 @@ const PhysiotherapistProfile = () => {
     const { dToken, profileData, setProfileData, getProfileData } = useContext(PhysiotherapistContext)
     const { currency, backendUrl } = useContext(AppContext)
     const [isEdit, setIsEdit] = useState(false)
+    const [image, setImage] = useState(false)
 
     const updateProfile = async () => {
 
         try {
 
-            const updateData = {
-                address: profileData.address,
-                fees: profileData.fees,
-                about: profileData.about,
-                available: profileData.available
-            }
+            const formData = new FormData();
+            
+            formData.append('address', JSON.stringify(profileData.address))
+            formData.append('fees', profileData.fees)
+            formData.append('about', profileData.about)
+            formData.append('available', profileData.available)
+            
+            image && formData.append('image', image)
 
-            const { data } = await axios.post(backendUrl + '/api/physiotherapist/update-profile', updateData, { headers: { dToken } })
+            const { data } = await axios.post(backendUrl + '/api/physiotherapist/update-profile', formData, { headers: { dToken } })
 
             if (data.success) {
                 toast.success(data.message)
                 setIsEdit(false)
+                setImage(false)
                 getProfileData()
             } else {
                 toast.error(data.message)
@@ -50,7 +54,16 @@ const PhysiotherapistProfile = () => {
         <div>
             <div className='flex flex-col gap-4 m-5'>
                 <div>
-                    <img className='bg-primary/80 w-full sm:max-w-64 rounded-lg' src={profileData.image} alt="" />
+                    {isEdit
+                        ? <label htmlFor='image' >
+                            <div className='inline-block relative cursor-pointer'>
+                                <img className='bg-primary/80 w-full sm:max-w-64 rounded-lg opacity-75' src={image ? URL.createObjectURL(image) : profileData.image} alt="" />
+                                <img className='w-10 absolute bottom-12 right-12' src={image ? '' : '/assets/upload.png'} alt="" />
+                            </div>
+                            <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image" hidden />
+                        </label>
+                        : <img className='bg-primary/80 w-full sm:max-w-64 rounded-lg' src={profileData.image} alt="" />
+                    }
                 </div>
 
                 <div className='flex-1 border border-stone-100 rounded-lg p-8 py-7 bg-white'>
