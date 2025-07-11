@@ -188,14 +188,14 @@ const MyAppointments = () => {
                         <div className='flex-1 text-sm text-[#5E5E5E]'>
                             <p className='text-[#262626] text-base font-semibold'>{item.physiotherapistData.name}</p>
                             <p>{item.physiotherapistData.speciality}</p>
-                            <p className='text-[#464646] font-medium mt-1'>Address:</p>
-                            <p className=''>{item.physiotherapistData.address.line1}</p>
-                            <p className=''>{item.physiotherapistData.address.line2}</p>
-                            <p className=' mt-1'><span className='text-sm text-[#3C3C3C] font-medium'>Date & Time:</span> {slotDateFormat(item.slotDate)} |  {item.slotTime}</p>
+                            <br />
+                            <p className='text-sm text-[#3C3C3C] font-medium'>Date & Time:</p>
+                            <p className=''>{slotDateFormat(item.slotDate)} |  {item.slotTime}</p>
                         </div>
                         <div></div>
                         <div className='flex flex-col gap-2 justify-end text-sm text-center'>
-                            {!item.cancelled && !item.payment && !item.isCompleted && payment !== item._id && <button onClick={() => setPayment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300'>Pay Online</button>}
+                            {/* {!item.cancelled && !item.payment && !item.isCompleted && payment !== item._id && <button onClick={() => setPayment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300'>Pay Online</button>} */}
+
                             {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentStripe(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center'><img className='max-w-20 max-h-5' src={assets.stripe_logo} alt="" /></button>}
                             {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentRazorpay(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center'><img className='max-w-20 max-h-5' src={assets.razorpay_logo} alt="" /></button>}
                             {!item.cancelled && item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border rounded text-[#696969]  bg-[#EAEFFF]'>Paid</button>}
@@ -218,7 +218,7 @@ const MyAppointments = () => {
                                     Reviewed
                                 </button>
                             }
-
+                            {/* center the button bellow*/}
                             {!item.cancelled && !item.isCompleted && <button onClick={() => cancelAppointment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300'>Cancel appointment</button>}
                             {item.cancelled && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>}
                         </div>
