@@ -9,10 +9,10 @@ import stripe from "stripe";
 import razorpay from 'razorpay';
 
 // Gateway Initialize
-const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY)
+const stripeInstance = new stripe("NOT IMPLEMENTED")
 const razorpayInstance = new razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
+    key_id: "NOT IMPLEMENTED",
+    key_secret: "NOT IMPLEMENTED",
 })
 
 // API to register user
