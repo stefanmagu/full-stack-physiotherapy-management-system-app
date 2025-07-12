@@ -52,7 +52,7 @@ const Dashboard = () => {
     }
     
     return {
-      labels: ['Completed', 'Cancelled', 'Pending'],
+      labels: ['Finalizate', 'Anulate', 'Programate'],
       datasets: [
         {
           data,
@@ -112,21 +112,21 @@ const Dashboard = () => {
           <img className='w-14' src={assets.doctor_icon} alt="" />
           <div>
             <p className='text-xl font-semibold text-gray-600'>{dashData.physiotherapists}</p>
-            <p className='text-gray-400'>Physiotherapists</p>
+            <p className='text-gray-400'>Fizioterapeuți</p>
           </div>
         </div>
         <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
           <img className='w-14' src={assets.appointments_icon} alt="" />
           <div>
             <p className='text-xl font-semibold text-gray-600'>{dashData.appointments}</p>
-            <p className='text-gray-400'>Appointments</p>
+            <p className='text-gray-400'>Programări</p>
           </div>
         </div>
         <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
           <img className='w-14' src={assets.patients_icon} alt="" />
           <div>
             <p className='text-xl font-semibold text-gray-600'>{dashData.patients}</p>
-            <p className='text-gray-400'>Patients</p></div>
+            <p className='text-gray-400'>Pacienți</p></div>
         </div>
       </div>
 
@@ -134,7 +134,7 @@ const Dashboard = () => {
       <div className='flex flex-wrap gap-5 mt-8'>
         {/* Appointment Status Chart */}
         <div className='bg-white p-4 rounded-lg shadow-md flex-1 min-w-[300px]'>
-          <h2 className='text-lg font-semibold mb-4 text-gray-700'>Appointments Status</h2>
+          <h2 className='text-lg font-semibold mb-4 text-gray-700'>Stare programări</h2>
           <div className='h-64'>
             {prepareAppointmentStatusChart() && (
               <Pie 
@@ -173,7 +173,7 @@ const Dashboard = () => {
 
         {/* Physiotherapist Appointments Chart */}
         <div className='bg-white p-4 rounded-lg shadow-md flex-1 min-w-[300px]'>
-          <h2 className='text-lg font-semibold mb-4 text-gray-700'>Top Physiotherapists</h2>
+          <h2 className='text-lg font-semibold mb-4 text-gray-700'>Top Fizioterapeuți</h2>
           <div className='h-64'>
             {preparePhysiotherapistAppointmentsChart() && (
               <Bar 
@@ -187,7 +187,7 @@ const Dashboard = () => {
                     },
                     title: {
                       display: true,
-                      text: 'Appointments by Physiotherapist',
+                      text: 'Distribuția programărilor pe fizioterapeuți',
                     },
                   },
                 }}
@@ -200,7 +200,7 @@ const Dashboard = () => {
       <div className='bg-white mt-8'>
         <div className='flex items-center gap-2.5 px-4 py-4 rounded-t border'>
           <img src={assets.list_icon} alt="" />
-          <p className='font-semibold'>Latest Bookings</p>
+          <p className='font-semibold'>Ultimele programări</p>
         </div>
 
         <div className='pt-4 border border-t-0'>
@@ -209,9 +209,9 @@ const Dashboard = () => {
               <img className='rounded-full w-10' src={item.physiotherapistData.image} alt="" />
               <div className='flex-1 text-sm'>
                 <p className='text-gray-800 font-medium'>{item.physiotherapistData.name}</p>
-                <p className='text-gray-600 '>Booking on {slotDateFormat(item.slotDate)}</p>
+                <p className='text-gray-600 '>Programat pe {slotDateFormat(item.slotDate)}</p>
               </div>
-              {item.cancelled ? <p className='text-red-400 text-xs font-medium'>Cancelled</p> : item.isCompleted ? <p className='text-green-500 text-xs font-medium'>Completed</p> : <img onClick={() => cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />}
+              {item.cancelled ? <p className='text-red-400 text-xs font-medium'>Anulată</p> : item.isCompleted ? <p className='text-green-500 text-xs font-medium'>Finalizată</p> : <img onClick={() => cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />}
             </div>
           ))}
         </div>

@@ -72,13 +72,13 @@ const PhysiotherapistProfile = () => {
 
                     <p className='flex items-center gap-2 text-3xl font-medium text-gray-700'>{profileData.name}</p>
                     <div className='flex items-center gap-2 mt-1 text-gray-600'>
-                        <p>{profileData.degree} - {profileData.speciality}</p>
+                        <p>{profileData.degree}</p>
                         <button className='py-0.5 px-2 border text-xs rounded-full'>{profileData.experience}</button>
                     </div>
 
                     {/* ----- Physiotherapist About ----- */}
                     <div>
-                        <p className='flex items-center gap-1 text-sm font-medium text-[#262626] mt-3'>About :</p>
+                        <p className='flex items-center gap-1 text-sm font-medium text-[#262626] mt-3'>Despre mine :</p>
                         <p className='text-sm text-gray-600 max-w-[700px] mt-1'>
                             {
                                 isEdit
@@ -89,11 +89,11 @@ const PhysiotherapistProfile = () => {
                     </div>
 
                     <p className='text-gray-600 font-medium mt-4'>
-                        Appointment fee: <span className='text-gray-800'>{isEdit ? <input type='number' onChange={(e) => setProfileData(prev => ({ ...prev, fees: e.target.value }))} value={profileData.fees} /> : profileData.fees} {currency} </span>
+                        Cost programare: <span className='text-gray-800'>{isEdit ? <input type='number' onChange={(e) => setProfileData(prev => ({ ...prev, fees: e.target.value }))} value={profileData.fees} /> : profileData.fees} {currency} </span>
                     </p>
 
                     <div className='flex gap-2 py-2'>
-                        <p>Address:</p>
+                        <p>Adresă:</p>
                         <p className='text-sm'>
                             {isEdit ? <input type='text' onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={profileData.address.line1} /> : profileData.address.line1}
                             <br />

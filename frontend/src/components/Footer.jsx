@@ -8,7 +8,7 @@ const Footer = () => {
 
         <div>
           <img className='mb-5 w-40' src={assets.logo1} alt="" />
-          <p className='w-full md:w-2/3 text-gray-600 leading-6'>Welcome to Wekineto, your trusted partner for professional physiotherapy services. We're dedicated to improving your mobility, reducing pain, and enhancing your quality of life through personalized treatment plans and expert care from our experienced therapists.</p>
+          <p className='w-full md:w-2/3 text-gray-600 leading-6'>Bun venit la Wekineto, partenerul tău de încredere pentru servicii profesionale de fizioterapie. Suntem dedicați să îți îmbunătățim mobilitatea, să reducem durerea și să îți creștem calitatea vieții prin planuri de tratament personalizate și îngrijire expertă oferită de terapeuții noștri experimentați.</p>
         </div>
 
         {/* <div>
@@ -22,7 +22,7 @@ const Footer = () => {
         </div> */}
 
         <div>
-          <p className='text-xl font-medium mb-5'>GET IN TOUCH</p>
+          <p className='text-xl font-medium mb-5'>IA LEGĂTURA CU NOI</p>
           <ul className='flex flex-col gap-2 text-gray-600'>
             <li>+40 722 333 444</li>
             <li>wekineto@mail.com</li>

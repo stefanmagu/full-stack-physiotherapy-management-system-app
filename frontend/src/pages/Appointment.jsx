@@ -218,7 +218,7 @@ const Appointment = () => {
 
                     <p className='flex items-center gap-2 text-3xl font-medium text-gray-700'>{physiotherapistInfo.name} <img className='w-5' src={assets.verified_icon} alt="" /></p>
                     <div className='flex items-center gap-2 mt-1 text-gray-600'>
-                        <p>{physiotherapistInfo.degree} - {physiotherapistInfo.speciality}</p>
+                        <p>{physiotherapistInfo.degree}</p>
                         <button className='py-0.5 px-2 border text-xs rounded-full'>{physiotherapistInfo.experience}</button>
                     </div>
 
@@ -240,14 +240,14 @@ const Appointment = () => {
                         <p className='text-sm text-gray-600 max-w-[700px] mt-1'>{physiotherapistInfo.about}</p>
                     </div>
 
-                    <p className='text-gray-600 font-medium mt-4'>Appointment fee: <span className='text-gray-800'>{physiotherapistInfo.fees} {currencySymbol}</span> </p>
+                    <p className='text-gray-600 font-medium mt-4'>Cost programare: <span className='text-gray-800'>{physiotherapistInfo.fees} {currencySymbol}</span> </p>
                 </div>
             </div>
 
             
             {/* Booking slots */}
             <div className='sm:ml-72 sm:pl-4 mt-8 font-medium text-[#565656]'>
-                <p >Booking slots</p>
+                <p >Programări disponibile</p>
                 <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
                     {physioSlots.length && physioSlots.map((item, index) => (
                         <div onClick={() => setSlotIndex(index)} key={index} className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-primary text-white' : 'border border-[#DDDDDD]'}`}>
@@ -263,19 +263,19 @@ const Appointment = () => {
                     ))}
                 </div>
 
-                <button onClick={prepareAppointmentConfirmation} className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>Book an appointment</button>
+                <button onClick={prepareAppointmentConfirmation} className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>Programează consultația</button>
             </div>
 
             {/* Reviews Section */}
             {physiotherapistInfo.reviews && physiotherapistInfo.reviews.length > 0 && (
                 <div className="mt-8 sm:ml-72 sm:pl-4">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-medium text-gray-700">Patient Reviews</h3>
+                        <h3 className="text-lg font-medium text-gray-700">Recenzii ale pacienților</h3>
                         <button 
                             onClick={() => setReviewsVisible(!reviewsVisible)} 
                             className="text-primary text-sm"
                         >
-                            {reviewsVisible ? 'Hide Reviews' : 'Show Reviews'}
+                            {reviewsVisible ? 'Ascunde recenzii' : 'Afișează recenzii'}
                         </button>
                     </div>
                     
@@ -306,19 +306,19 @@ const Appointment = () => {
             {showConfirmModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded-lg w-full max-w-md">
-                        <h2 className="text-xl font-semibold mb-4">Confirm Appointment</h2>
+                        <h2 className="text-xl font-semibold mb-4">Confirmă programarea</h2>
                         
                         <div className="mb-6">
-                            <h3 className="font-medium text-gray-700 mb-2">Appointment Details:</h3>
+                            <h3 className="font-medium text-gray-700 mb-2">Detaliile programării:</h3>
                             <div className="bg-gray-50 p-4 rounded-lg">
-                                <p className="mb-2"><span className="font-medium">Physiotherapist:</span> {physiotherapistInfo.name}</p>
+                                <p className="mb-2"><span className="font-medium">Fizioterapeut:</span> {physiotherapistInfo.name}</p>
                                 <p className="mb-2"><span className="font-medium">Date:</span> {appointmentDetails.formattedDate}</p>
                                 <p className="mb-2"><span className="font-medium">Time:</span> {appointmentDetails.time}</p>
-                                <p><span className="font-medium">Fee:</span> {physiotherapistInfo.fees} {currencySymbol}</p>
+                                <p><span className="font-medium">Cost:</span> {physiotherapistInfo.fees} {currencySymbol}</p>
                             </div>
                         </div>
                         
-                        <p className="text-gray-600 mb-4">Are you sure you want to book this appointment?</p>
+                        <p className="text-gray-600 mb-4">Confirmați programarea?</p>
                         
                         <div className="flex justify-end space-x-2">
                             <button
@@ -331,7 +331,7 @@ const Appointment = () => {
                                 onClick={bookAppointment}
                                 className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
                             >
-                                Confirm Booking
+                                Confirmă Programarea
                             </button>
                         </div>
                     </div>

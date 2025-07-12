@@ -19,15 +19,15 @@ const Sidebar = () => {
         </NavLink>
         <NavLink to={'/all-appointments'} className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`}>
           <img className='min-w-5' src={assets.appointment_icon} alt='' />
-          <p className='hidden md:block'>Appointments</p>
+          <p className='hidden md:block'>Programări</p>
         </NavLink>
         <NavLink to={'/add-physiotherapist'} className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`}>
           <img className='min-w-5' src={assets.add_icon} alt='' />
-          <p className='hidden md:block'>Add Physiotherapist</p>
+          <p className='hidden md:block'>Adaugă Fizioterapeut</p>
         </NavLink>
         <NavLink to={'/physiotherapist-list'} className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`}>
           <img className='min-w-5' src={assets.people_icon} alt='' />
-          <p className='hidden md:block'>Physiotherapists List</p>
+          <p className='hidden md:block'>Lista Fizioterapeuților</p>
         </NavLink>
       </ul>}
 
@@ -38,11 +38,11 @@ const Sidebar = () => {
         </NavLink>
         <NavLink to={'/physiotherapist-appointments'} className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`}>
           <img className='min-w-5' src={assets.appointment_icon} alt='' />
-          <p className='hidden md:block'>Appointments</p>
+          <p className='hidden md:block'>Programări</p>
         </NavLink>
         <NavLink to={'/physiotherapist-profile'} className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`}>
           <img className='min-w-5' src={assets.people_icon} alt='' />
-          <p className='hidden md:block'>Profile</p>
+          <p className='hidden md:block'>Profil</p>
         </NavLink>
       </ul>}
     </div>

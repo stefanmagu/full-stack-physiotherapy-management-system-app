@@ -74,7 +74,7 @@ const AddPhysiotherapist = () => {
     return (
         <form onSubmit={onSubmitHandler} className='m-5 w-full'>
 
-            <p className='mb-3 text-lg font-medium'>Add Physiotherapist</p>
+            <p className='mb-3 text-lg font-medium'>Adaugă Fizioterapeut</p>
 
             <div className='bg-white px-8 py-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll'>
                 <div className='flex items-center gap-4 mb-8 text-gray-500'>
@@ -95,7 +95,7 @@ const AddPhysiotherapist = () => {
                         </div>
 
                         <div className='flex-1 flex flex-col gap-1'>
-                            <p>Physiotherapist Email</p>
+                            <p>Email Fizioterapeut</p>
                             <input onChange={e => setEmail(e.target.value)} value={email} className='border rounded px-3 py-2' type="email" placeholder='Email' required />
                         </div>
 
@@ -121,8 +121,8 @@ const AddPhysiotherapist = () => {
                         </div>
 
                         <div className='flex-1 flex flex-col gap-1'>
-                            <p>Fees</p>
-                            <input onChange={e => setFees(e.target.value)} value={fees} className='border rounded px-3 py-2' type="number" placeholder='Physiotherapist fees' required />
+                            <p>Cost</p>
+                            <input onChange={e => setFees(e.target.value)} value={fees} className='border rounded px-3 py-2' type="number" placeholder='Cost' required />
                         </div>
 
                     </div>
@@ -150,11 +150,11 @@ const AddPhysiotherapist = () => {
                 </div>
 
                 <div>
-                    <p className='mt-4 mb-2'>About Physiotherapist</p>
-                    <textarea onChange={e => setAbout(e.target.value)} value={about} className='w-full px-4 pt-2 border rounded' rows={5} placeholder='write about physiotherapist'></textarea>
+                    <p className='mt-4 mb-2'>Despre Fizioterapeut</p>
+                    <textarea onChange={e => setAbout(e.target.value)} value={about} className='w-full px-4 pt-2 border rounded' rows={5} placeholder='Descriere'></textarea>
                 </div>
 
-                <button type='submit' className='bg-primary px-10 py-3 mt-4 text-white rounded-full'>Add physiotherapist</button>
+                <button type='submit' className='bg-primary px-10 py-3 mt-4 text-white rounded-full'>Adaugă fizioterapeut</button>
 
             </div>
 

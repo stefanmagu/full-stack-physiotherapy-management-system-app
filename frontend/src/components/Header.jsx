@@ -16,18 +16,17 @@ const Header = () => {
             <div className='md:w-1/2 flex flex-col items-start justify-center gap-4 py-10 m-auto md:py-[10vw] md:mb-[-30px] relative z-10'>
                 <div className='absolute -left-20 -top-20 w-64 h-64 bg-primary-light/20 rounded-full blur-3xl'></div>
                 <h1 className='text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight md:leading-tight lg:leading-tight'>
-                    Restore <span className='text-blue-200'>Movement.</span><br />
-                    Regain <span className='text-blue-200'>Freedom.</span>
+                    Redobândește <span className='text-blue-200'>Mobilitatea.</span><br />
                 </h1>
                 <p className='text-white/90 text-lg max-w-md'>
-                    Professional physiotherapy services to help you recover, strengthen, and thrive.
+                    Servicii profesionale de fizioterapie și kinetoterapie pentru a te ajuta să te recuperezi și să te întărești.
                 </p>
                 <div className='flex items-center gap-6 mt-2'>
                     <button 
                         className='bg-white text-primary font-medium px-6 py-3 rounded-full hover:bg-blue-50 transition-all'
                         onClick={scrollToPhysiotherapists}
                     >
-                        Book Now
+                        Programează-te acum
                     </button>
 
                 </div>
@@ -38,7 +37,7 @@ const Header = () => {
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
                         </div>
-                        <span className='text-white text-sm'>Certified Specialists</span>
+                        <span className='text-white text-sm'>Specialiști certificați</span>
                     </div>
                     <div className='flex items-center gap-2'>
                         <div className='w-10 h-10 rounded-full bg-blue-100/30 flex items-center justify-center'>
@@ -46,7 +45,7 @@ const Header = () => {
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
                         </div>
-                        <span className='text-white text-sm'>Personalized Care</span>
+                        <span className='text-white text-sm'>Îngrijire personalizată</span>
                     </div>
                 </div>
             </div>

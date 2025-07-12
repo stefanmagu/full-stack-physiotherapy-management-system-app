@@ -18,16 +18,16 @@ const PhysiotherapistAppointments = () => {
   return (
     <div className='w-full max-w-6xl m-5 '>
 
-      <p className='mb-3 text-lg font-medium'>All Appointments</p>
+      <p className='mb-3 text-lg font-medium'>Toate programările</p>
 
       <div className='bg-white border rounded text-sm max-h-[80vh] overflow-y-scroll'>
         <div className='max-sm:hidden grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 py-3 px-6 border-b'>
           <p>#</p>
-          <p>Patient</p>
+          <p>Pacient</p>
           <p>Payment</p>
-          <p>Age</p>
+          <p>Vârstă</p>
           <p>Date & Time</p>
-          <p>Fees</p>
+          <p>Cost</p>
           <p>Action</p>
         </div>
         {appointments.map((item, index) => (
@@ -45,9 +45,9 @@ const PhysiotherapistAppointments = () => {
             <p>{slotDateFormat(item.slotDate)}, {item.slotTime}</p>
             <p>{item.amount} {currency}</p>
             {item.cancelled
-              ? <p className='text-red-400 text-xs font-medium'>Cancelled</p>
+              ? <p className='text-red-400 text-xs font-medium'>Anulată</p>
               : item.isCompleted
-                ? <p className='text-green-500 text-xs font-medium'>Completed</p>
+                ? <p className='text-green-500 text-xs font-medium'>Finalizată</p>
                 : <div className='flex'>
                   <img onClick={() => cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
                   <img onClick={() => completeAppointment(item._id)} className='w-10 cursor-pointer' src={assets.tick_icon} alt="" />

@@ -178,7 +178,7 @@ const MyAppointments = () => {
 
     return (
         <div>
-            <p className='pb-3 mt-12 text-lg font-medium text-gray-600 border-b'>My appointments</p>
+            <p className='pb-3 mt-12 text-lg font-medium text-gray-600 border-b'>Programările mele</p>
             <div className=''>
                 {appointments.map((item, index) => (
                     <div key={index} className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-4 border-b'>
@@ -200,7 +200,7 @@ const MyAppointments = () => {
                             {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentRazorpay(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center'><img className='max-w-20 max-h-5' src={assets.razorpay_logo} alt="" /></button>}
                             {!item.cancelled && item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border rounded text-[#696969]  bg-[#EAEFFF]'>Paid</button>}
 
-                            {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500'>Completed</button>}
+                            {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500'>Finalizată</button>}
                             
                             {/* Review button - only show for completed appointments that haven't been reviewed */}
                             {item.isCompleted && !item.cancelled && !item.reviewed && 
@@ -208,7 +208,7 @@ const MyAppointments = () => {
                                     onClick={() => openReviewModal(item._id)} 
                                     className='text-white sm:min-w-48 py-2 border rounded bg-primary hover:bg-primary/90 transition-all duration-300'
                                 >
-                                    Leave a Review
+                                    Lasă un review
                                 </button>
                             }
                             
@@ -219,8 +219,8 @@ const MyAppointments = () => {
                                 </button>
                             }
                             {/* center the button bellow*/}
-                            {!item.cancelled && !item.isCompleted && <button onClick={() => cancelAppointment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300'>Cancel appointment</button>}
-                            {item.cancelled && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>}
+                            {!item.cancelled && !item.isCompleted && <button onClick={() => cancelAppointment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300'>Anulează programare</button>}
+                            {item.cancelled && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Programare anulată</button>}
                         </div>
                     </div>
                 ))}
@@ -230,7 +230,7 @@ const MyAppointments = () => {
             {showReviewModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded-lg w-full max-w-md">
-                        <h2 className="text-xl font-semibold mb-4">Leave a Review</h2>
+                        <h2 className="text-xl font-semibold mb-4">Lasă un review</h2>
                         <form onSubmit={submitReview}>
                             <div className="mb-4">
                                 <label className="block text-gray-700 mb-2">Rating</label>
@@ -248,14 +248,14 @@ const MyAppointments = () => {
                                 </div>
                             </div>
                             <div className="mb-4">
-                                <label className="block text-gray-700 mb-2">Comment</label>
+                                
                                 <textarea
                                     name="comment"
                                     value={reviewForm.comment}
                                     onChange={handleReviewChange}
                                     className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                                     rows="4"
-                                    placeholder="Share your experience..."
+                                    placeholder="Spune-ne cum a fost..."
                                 ></textarea>
                             </div>
                             <div className="flex justify-end space-x-2">

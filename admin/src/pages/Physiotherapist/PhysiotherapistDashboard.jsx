@@ -55,7 +55,7 @@ const PhysiotherapistDashboard = () => {
     }
     
     return {
-      labels: ['Completed', 'Cancelled', 'Pending'],
+      labels: ['Finalizate', 'Anulate', 'Programate'],
       datasets: [
         {
           data,
@@ -108,7 +108,7 @@ const PhysiotherapistDashboard = () => {
       labels,
       datasets: [
         {
-          label: 'Past Appointments',
+          label: 'Programări trecute',
           data: [...pastData, ...Array(futureData.length).fill(null)],
           backgroundColor: 'rgba(54, 162, 235, 0.6)',
           borderColor: 'rgba(54, 162, 235, 1)',
@@ -116,7 +116,7 @@ const PhysiotherapistDashboard = () => {
           barPercentage: 0.6,
         },
         {
-          label: 'Predicted Appointments',
+          label: 'Programări previzionate',
           data: [...Array(pastData.length).fill(null), ...futureData],
           backgroundColor: 'rgba(255, 159, 64, 0.6)',
           borderColor: 'rgba(255, 159, 64, 1)',
@@ -135,27 +135,27 @@ const PhysiotherapistDashboard = () => {
           <img className='w-14' src={assets.earning_icon} alt="" />
           <div>
             <p className='text-xl font-semibold text-gray-600'>{dashData.earnings} {currency}</p>
-            <p className='text-gray-400'>Earnings</p>
+            <p className='text-gray-400'>Încasări</p>
           </div>
         </div>
         <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
           <img className='w-14' src={assets.appointments_icon} alt="" />
           <div>
             <p className='text-xl font-semibold text-gray-600'>{dashData.appointments}</p>
-            <p className='text-gray-400'>Appointments</p>
+            <p className='text-gray-400'>Programări</p>
           </div>
         </div>
         <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
           <img className='w-14' src={assets.patients_icon} alt="" />
           <div>
             <p className='text-xl font-semibold text-gray-600'>{dashData.patients}</p>
-            <p className='text-gray-400'>Patients</p></div>
+            <p className='text-gray-400'>Pacienți</p></div>
         </div>
         <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
           <img className='w-14' src={assets.appointments_icon} alt="" />
           <div>
             <p className='text-xl font-semibold text-gray-600'>{dashData.currentMonthAppointments}</p>
-            <p className='text-gray-400'>This Month</p></div>
+            <p className='text-gray-400'>Luna curentă</p></div>
         </div>
       </div>
 
@@ -163,7 +163,7 @@ const PhysiotherapistDashboard = () => {
       <div className='flex flex-wrap gap-5 mt-8'>
         {/* Appointment Status Chart */}
         <div className='bg-white p-4 rounded-lg shadow-md flex-1 min-w-[300px]'>
-          <h2 className='text-lg font-semibold mb-4 text-gray-700'>Appointments Status</h2>
+          <h2 className='text-lg font-semibold mb-4 text-gray-700'>Stare programări</h2>
           <div className='h-64'>
             {prepareAppointmentStatusChart() && (
               <Pie 
@@ -202,7 +202,7 @@ const PhysiotherapistDashboard = () => {
 
         {/* Monthly Trend Chart */}
         <div className='bg-white p-4 rounded-lg shadow-md flex-1 min-w-[300px]'>
-          <h2 className='text-lg font-semibold mb-4 text-gray-700'>Last 6 Months Trend</h2>
+          <h2 className='text-lg font-semibold mb-4 text-gray-700'>Programarile din ultimele 6 luni</h2>
           <div className='h-64'>
             {prepareMonthlyTrendChart() && (
               <Bar 
@@ -216,7 +216,7 @@ const PhysiotherapistDashboard = () => {
                     },
                     title: {
                       display: true,
-                      text: 'Appointment Trend',
+                      text: 'Trendul programărilor',
                     },
                   },
                 }}
@@ -229,7 +229,7 @@ const PhysiotherapistDashboard = () => {
       {/* Forecast Chart */}
       <div className='mt-8'>
         <div className='bg-white p-4 rounded-lg shadow-md'>
-          <h2 className='text-lg font-semibold mb-4 text-gray-700'>3-Month Forecast</h2>
+          <h2 className='text-lg font-semibold mb-4 text-gray-700'>Prognoza pentru urmatoarele 3 luni</h2>
           <div className='h-64'>
             {prepareForecastChart() && (
               <Bar 
@@ -242,7 +242,7 @@ const PhysiotherapistDashboard = () => {
                       beginAtZero: true,
                       title: {
                         display: true,
-                        text: 'Number of Appointments'
+                        text: 'Număr programări'
                       }
                     }
                   },
@@ -262,9 +262,17 @@ const PhysiotherapistDashboard = () => {
               />
             )}
           </div>
-          <div className='mt-4 text-sm text-gray-600 bg-gray-50 p-3 rounded'>
-            <p className='font-medium'>About this forecast:</p>
-            <p>This simple prediction is based on your average monthly appointments and already confirmed bookings. Blue bars show past appointments, orange bars show predicted future appointments.</p>
+          <div className='mt-4 text-sm text-gray-600 bg-gray-50 p-3 rounded space-y-3'>
+            <p className='font-medium'>Despre această predicție:</p>
+            <p>
+              Predicția se bazează pe numărul mediu de programări lunare și pe programările deja confirmate. Barele albastre reprezintă programările trecute, iar barele portocalii arată programările viitoare estimate.
+            </p>
+            <p>Prognoza folosește media lunară din ultimele 6 luni și programările deja confirmate:</p>
+            <ul className='list-disc list-inside space-y-1 text-gray-700'>
+              <li><strong>Luna 1:</strong> 70% confirmări + 30% medie (cele mai sigure date).</li>
+              <li><strong>Luna 2:</strong> 40% confirmări + 60% medie.</li>
+              <li><strong>Luna 3:</strong> 20% confirmări + 80% medie (mai multă incertitudine).</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -272,7 +280,7 @@ const PhysiotherapistDashboard = () => {
       <div className='bg-white mt-8'>
         <div className='flex items-center gap-2.5 px-4 py-4 rounded-t border'>
           <img src={assets.list_icon} alt="" />
-          <p className='font-semibold'>Latest Bookings</p>
+          <p className='font-semibold'>Ultimele programări</p>
         </div>
 
         <div className='pt-4 border border-t-0'>
@@ -281,12 +289,12 @@ const PhysiotherapistDashboard = () => {
               <img className='rounded-full w-10' src={item.userData.image} alt="" />
               <div className='flex-1 text-sm'>
                 <p className='text-gray-800 font-medium'>{item.userData.name}</p>
-                <p className='text-gray-600 '>Booking on {slotDateFormat(item.slotDate)}</p>
+                <p className='text-gray-600 '>Programat pe {slotDateFormat(item.slotDate)}</p>
               </div>
               {item.cancelled
-                ? <p className='text-red-400 text-xs font-medium'>Cancelled</p>
+                ? <p className='text-red-400 text-xs font-medium'>Anulată</p>
                 : item.isCompleted
-                  ? <p className='text-green-500 text-xs font-medium'>Completed</p>
+                  ? <p className='text-green-500 text-xs font-medium'>Finalizată</p>
                   : <div className='flex'>
                     <img onClick={() => cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
                     <img onClick={() => completeAppointment(item._id)} className='w-10 cursor-pointer' src={assets.tick_icon} alt="" />
