@@ -22,10 +22,8 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/physiotherapists' element={<Physiotherapists />} />
-        {/* <Route path='/physiotherapists/:speciality' element={<Physiotherapists />} /> */}
         <Route path='/login' element={<Login />} />
         <Route path='/about' element={<About />} />
-        {/* <Route path='/contact' element={<Contact />} /> */}
         <Route path='/appointment/:physiotherapistId' element={<Appointment />} />
         <Route path='/my-appointments' element={<MyAppointments />} />
         <Route path='/my-profile' element={<MyProfile />} />

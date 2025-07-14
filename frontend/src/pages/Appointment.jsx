@@ -246,24 +246,73 @@ const Appointment = () => {
 
             
             {/* Booking slots */}
-            <div className='sm:ml-72 sm:pl-4 mt-8 font-medium text-[#565656]'>
-                <p >Programări disponibile</p>
-                <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
-                    {physioSlots.length && physioSlots.map((item, index) => (
-                        <div onClick={() => setSlotIndex(index)} key={index} className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-primary text-white' : 'border border-[#DDDDDD]'}`}>
-                            <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
-                            <p>{item[0] && item[0].datetime.getDate()}</p>
-                        </div>
-                    ))}
+            <div className='sm:ml-72 sm:pl-4 mt-8'>
+                <div className='mb-6'>
+                    <h3 className='text-xl font-semibold text-gray-800 mb-2'>Programări disponibile</h3>
+                    <p className='text-sm text-gray-600'>Selectați data și ora dorită pentru programarea dvs.</p>
+                </div>
+                
+                {/* Date Selection */}
+                <div className='mb-6'>
+                    <p className='text-sm font-medium text-gray-700 mb-3'>Selectați data:</p>
+                    <div className='flex gap-3 items-center w-full overflow-x-scroll pb-2'>
+                        {physioSlots.length && physioSlots.map((item, index) => (
+                            <div 
+                                onClick={() => setSlotIndex(index)} 
+                                key={index} 
+                                className={`flex-shrink-0 text-center p-4 min-w-20 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                                    slotIndex === index 
+                                        ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-200' 
+                                        : 'bg-white border-2 border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-50'
+                                }`}
+                            >
+                                <p className={`text-xs font-medium ${slotIndex === index ? 'text-blue-100' : 'text-gray-500'}`}>
+                                    {item[0] && daysOfWeek[item[0].datetime.getDay()]}
+                                </p>
+                                <p className={`text-lg font-bold mt-1 ${slotIndex === index ? 'text-white' : 'text-gray-800'}`}>
+                                    {item[0] && item[0].datetime.getDate()}
+                                </p>
+                                <div className={`w-2 h-2 rounded-full mx-auto mt-2 ${
+                                    slotIndex === index ? 'bg-white' : 'bg-blue-400'
+                                }`}></div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
-                <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
-                    {physioSlots.length && physioSlots[slotIndex].map((item, index) => (
-                        <p onClick={() => setSlotTime(item.time)} key={index} className={`text-sm font-light  flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-primary text-white' : 'text-[#949494] border border-[#B4B4B4]'}`}>{item.time.toLowerCase()}</p>
-                    ))}
+                {/* Time Selection */}
+                <div className='mb-8'>
+                    <p className='text-sm font-medium text-gray-700 mb-3'>Selectați ora:</p>
+                    <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3'>
+                        {physioSlots.length && physioSlots[slotIndex].map((item, index) => (
+                            <button
+                                onClick={() => setSlotTime(item.time)}
+                                key={index}
+                                className={`p-3 rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 ${
+                                    item.time === slotTime
+                                        ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-200'
+                                        : 'bg-white border-2 border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-50'
+                                }`}
+                            >
+                                <div className='flex items-center justify-center'>
+                                    <span className='mr-1'>🕐</span>
+                                    {item.time}
+                                </div>
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
-                <button onClick={prepareAppointmentConfirmation} className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>Programează consultația</button>
+                {/* Book Button */}
+                <div className='flex justify-center'>
+                    <button 
+                        onClick={prepareAppointmentConfirmation} 
+                        className='bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2'
+                    >
+                        <span>📅</span>
+                        Programează consultația
+                    </button>
+                </div>
             </div>
 
             {/* Reviews Section */}

@@ -5,7 +5,7 @@ const physiotherapistSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     image: { type: String, required: true },
-    speciality: { type: String, default: "Physiotherapist" },
+    speciality: { type: String, default: "Fizioterapeut" },
     degree: { type: String, required: true },
     experience: { type: String, required: true },
     about: { type: String, required: true },

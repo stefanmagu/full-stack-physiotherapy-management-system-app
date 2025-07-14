@@ -15,7 +15,7 @@ const loginAdmin = async (req, res) => {
             const token = jwt.sign(email + password, process.env.JWT_SECRET)
             res.json({ success: true, token })
         } else {
-            res.json({ success: false, message: "Invalid credentials" })
+            res.json({ success: false, message: "Email sau parola gresita" })
         }
 
     } catch (error) {
@@ -47,7 +47,7 @@ const appointmentCancel = async (req, res) => {
         const { appointmentId } = req.body
         await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
 
-        res.json({ success: true, message: 'Appointment Cancelled' })
+        res.json({ success: true, message: 'Programare anulata' })
 
     } catch (error) {
         console.log(error)
@@ -66,12 +66,12 @@ const addPhysiotherapist = async (req, res) => {
 
         // checking for all data to add physiotherapist
         if (!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address) {
-            return res.json({ success: false, message: "Missing Details" })
+            return res.json({ success: false, message: "Detalii lipsă" })
         }
 
         // validating email format
         if (!validator.isEmail(email)) {
-            return res.json({ success: false, message: "Please enter a valid email" })
+            return res.json({ success: false, message: "Introdu un email valid" })
         }
 
         // upload image to cloudinary
@@ -94,7 +94,7 @@ const addPhysiotherapist = async (req, res) => {
 
         const newPhysiotherapist = new physiotherapistModel(physiotherapistData)
         await newPhysiotherapist.save()
-        res.json({ success: true, message: 'Physiotherapist Added' })
+        res.json({ success: true, message: 'Fizioterapeut adaugat' })
 
     } catch (error) {
         console.log(error)

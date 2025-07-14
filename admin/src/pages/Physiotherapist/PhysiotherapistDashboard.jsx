@@ -55,7 +55,7 @@ const PhysiotherapistDashboard = () => {
     }
     
     return {
-      labels: ['Finalizate', 'Anulate', 'Programate'],
+      labels: ['Finalizate', 'Anulate', 'În așteptare'],
       datasets: [
         {
           data,
@@ -269,9 +269,9 @@ const PhysiotherapistDashboard = () => {
             </p>
             <p>Prognoza folosește media lunară din ultimele 6 luni și programările deja confirmate:</p>
             <ul className='list-disc list-inside space-y-1 text-gray-700'>
-              <li><strong>Luna 1:</strong> 70% confirmări + 30% medie (cele mai sigure date).</li>
-              <li><strong>Luna 2:</strong> 40% confirmări + 60% medie.</li>
-              <li><strong>Luna 3:</strong> 20% confirmări + 80% medie (mai multă incertitudine).</li>
+              <li><strong>Luna 1:</strong> 70% programările finalizate + 30% medie (cele mai sigure date).</li>
+              <li><strong>Luna 2:</strong> 40% programările finalizate + 60% medie.</li>
+              <li><strong>Luna 3:</strong> 20% programările finalizate + 80% medie (mai multă incertitudine).</li>
             </ul>
           </div>
         </div>

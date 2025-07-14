@@ -12,7 +12,7 @@ const loginPhysiotherapist = async (req, res) => {
         const user = await physiotherapistModel.findOne({ email })
 
         if (!user) {
-            return res.json({ success: false, message: "Invalid credentials" })
+            return res.json({ success: false, message: "Date de autentificare invalide" })
         }
 
         const isMatch = password === user.password
@@ -21,7 +21,7 @@ const loginPhysiotherapist = async (req, res) => {
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
             res.json({ success: true, token })
         } else {
-            res.json({ success: false, message: "Invalid credentials" })
+            res.json({ success: false, message: "Date de autentificare invalide" })
         }
 
 
@@ -55,10 +55,10 @@ const appointmentCancel = async (req, res) => {
         const appointmentData = await appointmentModel.findById(appointmentId)
         if (appointmentData && appointmentData.physiotherapistId === physiotherapistId) {
             await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
-            return res.json({ success: true, message: 'Appointment Cancelled' })
+            return res.json({ success: true, message: 'Programare anulata' })
         }
 
-        res.json({ success: false, message: 'Appointment not found' }) 
+        res.json({ success: false, message: 'Programarea nu a fost gasita' }) 
 
     } catch (error) {
         console.log(error)
@@ -76,10 +76,10 @@ const appointmentComplete = async (req, res) => {
         const appointmentData = await appointmentModel.findById(appointmentId)
         if (appointmentData && appointmentData.physiotherapistId === physiotherapistId) {
             await appointmentModel.findByIdAndUpdate(appointmentId, { isCompleted: true })
-            return res.json({ success: true, message: 'Appointment Completed' })
+            return res.json({ success: true, message: 'Programare finalizata' })
         }
 
-        res.json({ success: false, message: 'Appointment not found' })
+        res.json({ success: false, message: 'Programarea nu a fost gasita' })
 
     } catch (error) {
         console.log(error)
@@ -157,7 +157,7 @@ const updatePhysiotherapistProfile = async (req, res) => {
             await physiotherapistModel.findByIdAndUpdate(physiotherapistId, { image: imageURL })
         }
 
-        res.json({ success: true, message: 'Profile Updated' })
+        res.json({ success: true, message: 'Profil actualizat' })
 
     } catch (error) {
         console.log(error)

@@ -52,7 +52,7 @@ const Dashboard = () => {
     }
     
     return {
-      labels: ['Finalizate', 'Anulate', 'Programate'],
+      labels: ['Finalizate', 'Anulate', 'În așteptare'],
       datasets: [
         {
           data,

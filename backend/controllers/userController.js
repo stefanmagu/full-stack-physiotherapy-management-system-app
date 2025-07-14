@@ -23,12 +23,12 @@ const registerUser = async (req, res) => {
 
         // checking for all data to register user
         if (!name || !email || !password) {
-            return res.json({ success: false, message: 'Missing Details' })
+            return res.json({ success: false, message: 'Detalii lipsa' })
         }
 
         // validating email format
         if (!validator.isEmail(email)) {
-            return res.json({ success: false, message: "Please enter a valid email" })
+            return res.json({ success: false, message: "Introdu un email valid" })
         }
 
         // validating strong password
@@ -66,7 +66,7 @@ const loginUser = async (req, res) => {
         const user = await userModel.findOne({ email })
 
         if (!user) {
-            return res.json({ success: false, message: "User does not exist" })
+            return res.json({ success: false, message: "Utilizatorul nu exista" })
         }
 
         const isMatch = password === user.password;
@@ -76,7 +76,7 @@ const loginUser = async (req, res) => {
             res.json({ success: true, token })
         }
         else {
-            res.json({ success: false, message: "Invalid credentials" })
+            res.json({ success: false, message: "Date de autentificare invalide" })
         }
     } catch (error) {
         console.log(error)
@@ -109,7 +109,7 @@ const updateProfile = async (req, res) => { // form req
         //console.log(imageFile)
 
         if (!name || !phone || !dob || !gender) {
-            return res.json({ success: false, message: "Data Missing" })
+            return res.json({ success: false, message: "Date lipsă" })
         }
 
         await userModel.findByIdAndUpdate(userId, { name, phone, address: JSON.parse(address), dob, gender })
@@ -123,7 +123,7 @@ const updateProfile = async (req, res) => { // form req
             await userModel.findByIdAndUpdate(userId, { image: imageURL })
         }
 
-        res.json({ success: true, message: 'Profile Updated' })
+        res.json({ success: true, message: 'Profil actualizat' })
 
     } catch (error) {
         console.log(error)
@@ -140,7 +140,7 @@ const bookAppointment = async (req, res) => {
         const physiotherapistData = await physiotherapistModel.findById(physiotherapistId).select("-password")
 
         if (!physiotherapistData.available) {
-            return res.json({ success: false, message: 'Physiotherapist Not Available' })
+            return res.json({ success: false, message: 'Fizioterapeutul nu este disponibil' })
         }
 
         let slots_booked = physiotherapistData.slots_booked
@@ -148,7 +148,7 @@ const bookAppointment = async (req, res) => {
         // checking for slot availablity 
         if (slots_booked[slotDate]) {
             if (slots_booked[slotDate].includes(slotTime)) {
-                return res.json({ success: false, message: 'Slot Not Available' })
+                return res.json({ success: false, message: 'Intervalul orar nu este disponibil' })
             }
             else {
                 slots_booked[slotDate].push(slotTime)
@@ -179,7 +179,7 @@ const bookAppointment = async (req, res) => {
         // save new slots data in physiotherapistData
         await physiotherapistModel.findByIdAndUpdate(physiotherapistId, { slots_booked })
 
-        res.json({ success: true, message: 'Appointment Booked' })
+        res.json({ success: true, message: 'Programare confirmata' })
 
     } catch (error) {
         console.log(error)
@@ -197,7 +197,7 @@ const cancelAppointment = async (req, res) => {
 
         // verify appointment user 
         if (appointmentData.userId !== userId) {
-            return res.json({ success: false, message: 'Unauthorized action' })
+            return res.json({ success: false, message: 'Actiune neautorizata' })
         }
 
         await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
@@ -213,7 +213,7 @@ const cancelAppointment = async (req, res) => {
 
         await physiotherapistModel.findByIdAndUpdate(physiotherapistId, { slots_booked })
 
-        res.json({ success: true, message: 'Appointment Cancelled' })
+        res.json({ success: true, message: 'Programare anulata' })
 
     } catch (error) {
         console.log(error)
@@ -244,7 +244,7 @@ const paymentRazorpay = async (req, res) => {
         const appointmentData = await appointmentModel.findById(appointmentId)
 
         if (!appointmentData || appointmentData.cancelled) {
-            return res.json({ success: false, message: 'Appointment Cancelled or not found' })
+            return res.json({ success: false, message: 'Programarea anulata sau nu a fost gasita' })
         }
 
         // creating options for razorpay payment
@@ -273,10 +273,10 @@ const verifyRazorpay = async (req, res) => {
 
         if (orderInfo.status === 'paid') {
             await appointmentModel.findByIdAndUpdate(orderInfo.receipt, { payment: true })
-            res.json({ success: true, message: "Payment Successful" })
+            res.json({ success: true, message: "Plata efectuata cu succes" })
         }
         else {
-            res.json({ success: false, message: 'Payment Failed' })
+            res.json({ success: false, message: 'Plata a esuat' })
         }
     } catch (error) {
         console.log(error)
@@ -294,7 +294,7 @@ const paymentStripe = async (req, res) => {
         const appointmentData = await appointmentModel.findById(appointmentId)
 
         if (!appointmentData || appointmentData.cancelled) {
-            return res.json({ success: false, message: 'Appointment Cancelled or not found' })
+            return res.json({ success: false, message: 'Programarea anulata sau nu a fost gasita' })
         }
 
         const currency = process.env.CURRENCY.toLocaleLowerCase()
@@ -332,10 +332,10 @@ const verifyStripe = async (req, res) => {
 
         if (success === "true") {
             await appointmentModel.findByIdAndUpdate(appointmentId, { payment: true })
-            return res.json({ success: true, message: 'Payment Successful' })
+            return res.json({ success: true, message: 'Plata efectuata cu succes' })
         }
 
-        res.json({ success: false, message: 'Payment Failed' })
+        res.json({ success: false, message: 'Plata a esuat' })
 
     } catch (error) {
         console.log(error)
@@ -350,34 +350,34 @@ const submitReview = async (req, res) => {
         const { appointmentId, rating, comment, userId } = req.body;
 
         if (!appointmentId || !rating || !userId) {
-            return res.json({ success: false, message: 'Missing required fields' });
+            return res.json({ success: false, message: 'Campuri obligatorii lipsa' });
         }
 
         // Validate rating
         if (rating < 1 || rating > 5) {
-            return res.json({ success: false, message: 'Rating must be between 1 and 5' });
+            return res.json({ success: false, message: 'Ratingul trebuie sa fie intre 1 si 5.' });
         }
 
         // Find the appointment
         const appointment = await appointmentModel.findById(appointmentId);
         
         if (!appointment) {
-            return res.json({ success: false, message: 'Appointment not found' });
+            return res.json({ success: false, message: 'Programarea nu a fost gasita.' });
         }
 
         // Check if the appointment belongs to the user
         if (appointment.userId !== userId) {
-            return res.json({ success: false, message: 'Unauthorized' });
+            return res.json({ success: false, message: 'Neautorizat' });
         }
 
         // Check if the appointment is completed and not cancelled
         if (!appointment.isCompleted || appointment.cancelled) {
-            return res.json({ success: false, message: 'Cannot review an appointment that is not completed or was cancelled' });
+            return res.json({ success: false, message: 'Nu poti evalua o programare care nu este finalizata sau a fost anulata.' });
         }
 
         // Check if the appointment is already reviewed
         if (appointment.reviewed) {
-            return res.json({ success: false, message: 'This appointment has already been reviewed' });
+            return res.json({ success: false, message: 'Aceasta programare a fost deja evaluata.' });
         }
 
         // Create the review object
@@ -401,7 +401,7 @@ const submitReview = async (req, res) => {
 
         return res.json({ 
             success: true, 
-            message: 'Review submitted successfully' 
+            message: 'Recenzie trimisa cu succes.' 
         });
 
     } catch (error) {

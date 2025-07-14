@@ -63,8 +63,8 @@ const Login = () => {
         <button className='bg-primary text-white w-full py-2 rounded-md text-base'>Login</button>
         {
           state === 'Admin'
-            ? <p>Physiotherapist Login? <span onClick={() => setState('Physiotherapist')} className='text-primary underline cursor-pointer'>Click here</span></p>
-            : <p>Admin Login? <span onClick={() => setState('Admin')} className='text-primary underline cursor-pointer'>Click here</span></p>
+            ? <p>Physiotherapist Login? <span onClick={() => setState('Physiotherapist')} className='text-primary underline cursor-pointer'>Click aici</span></p>
+            : <p>Admin Login? <span onClick={() => setState('Admin')} className='text-primary underline cursor-pointer'>Click aici</span></p>
         }
       </div>
     </form>
